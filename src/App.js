@@ -1,16 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import "./App.css";
+import * as React from "react";
+import Navigation from "./layout/Navigation";
+import Router from "./router/Router";
+import Main from "./layout/Main";
+import Footer from "./layout/Footer";
 
 function App() {
-  const [data, setData] = useState('');
-
-  useEffect(() => {
-    (async function () {
-      const { text } = await( await fetch(`/api/message`)).json();
-      setData(text);
-    })();
-  });
-
-  return <div>{data}</div>;
+  return (
+    <div className="App">
+      <Navigation />
+      <Main>
+        <Router />
+      </Main>
+      <Footer />
+    </div>
+  );
 }
 
 export default App;

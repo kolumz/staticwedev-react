@@ -1,0 +1,31 @@
+:root {
+  --muted: #767676;
+}
+.color_muted {
+  color: var(--muted);
+}
+.search .css-7mt4h1-MuiInputBase-root .MuiInputBase-input {
+  width: 50ch !important;
+}
+.search .css-7mt4h1-MuiInputBase-root .MuiInputBase-input:focus {
+  width: 65ch !important;
+}
+/* @media (max-width: 992px) {
+  .search .css-7mt4h1-MuiInputBase-root .MuiInputBase-input {
+    width: 12ch !important;
+  }
+  .search .css-7mt4h1-MuiInputBase-root .MuiInputBase-input:focus {
+    width: 20ch !important;
+  }
+}
+
+.search .css-7mt4h1-MuiInputBase-root .MuiInputBase-input {
+  width: 6ch !important;
+}
+.search .css-7mt4h1-MuiInputBase-root .MuiInputBase-input:focus {
+  width: 10ch !important;
+} */
+
+/* @media (min-width: 600px) {
+
+} */
