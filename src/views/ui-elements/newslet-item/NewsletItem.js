@@ -13,35 +13,37 @@ import ShareIcon from "@mui/icons-material/Share";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ReplyIcon from "@mui/icons-material/Reply";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import * as moment from "moment";
+import "moment/locale/ar";
 
-export default function NewsletItem({ data }) {
+export default function NewsletItem({ article }) {
   return (
     <Card style={{ borderRadius: "24px" }} sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
-        height={data.img.height}
-        image={data.img.url}
+        // height={article.img.height}
+        image={article.urlToImage}
         alt="Paella dish"
       />
       <CardHeader
         avatar={
-          data.creator.img ? (
-            <Avatar alt="Remy Sharp" src={data.creator.img} />
-          ) : (
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="user1"></Avatar>
-          )
+          // article.creator
+          //   .img ? // <Avatar alt="Remy Sharp" src={article.creator.img} />
+          // null : (
+          //   )
+          <Avatar sx={{ bgcolor: red[500] }} aria-label="user1"></Avatar>
         }
         action={
           <IconButton aria-label="settings">
             <MoreVertIcon />
           </IconButton>
         }
-        title={data.creator.name}
-        subheader="September 14, 2016"
+        title={article.author}
+        subheader={moment(article.publishedAt).locale("en").format("LL")}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {data.title}
+          {article.title}
         </Typography>
       </CardContent>
       <CardActions className="justify-content-between" disableSpacing>
