@@ -16,13 +16,15 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import * as moment from "moment";
 import "moment/locale/ar";
 
+import cnn from "../../../assets/cnn.jpg";
+
 export default function NewsletItem({ article }) {
   return (
     <Card style={{ borderRadius: "24px" }} sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
         // height={article.img.height}
-        image={article.urlToImage}
+        image={article.image ? article.image : cnn}
         alt="Paella dish"
       />
       <CardHeader
@@ -38,7 +40,7 @@ export default function NewsletItem({ article }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={article.author}
+        title={article.author ? article.author : "john doe"}
         subheader={moment(article.publishedAt).locale("en").format("LL")}
       />
       <CardContent>

@@ -8,12 +8,13 @@ const Feed = () => {
   const [articles, setArticles] = useState();
 
   const api =
-    "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=74d91dc51acf41758e5cab786c8d1d77";
+    "http://api.mediastack.com/v1/news?access_key=c3c53ed9cc2ac2f75b7efa8e813a618f&sources=cnn,bbc&limit=100";
   const getArticles = () => {
     fetch(api)
       .then((res) => res.json())
       .then((json) => {
-        setArticles(json.articles);
+        console.log(json.data);
+        setArticles(json.data);
       });
   };
 
