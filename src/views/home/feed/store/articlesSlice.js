@@ -31,6 +31,4 @@ export const articlesSlice = createSlice({
   },
 });
 
-// Action creators are generated for each case reducer function
-// export const { getArticles } = articlesSlice.actions;
 export default articlesSlice.reducer;
