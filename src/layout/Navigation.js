@@ -31,7 +31,6 @@ const Navigation = () => {
 
   useEffect(() => {
     const token = user?.token;
-    console.log(location);
     // JWT
 
     setUser(JSON.parse(localStorage.getItem("profile")));
