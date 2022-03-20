@@ -19,7 +19,7 @@ import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import styles from "./Navigation.module.css";
 import { useDispatch } from "react-redux";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { logout } from "../views/auth/store/authSlice";
 
 const Navigation = () => {
@@ -175,14 +175,15 @@ const Navigation = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
+                <MenuItem>
+                  {/* <Link to={user?.result.name.replace(/\s/g, "")}>
+                    <Typography textAlign="center">Profile</Typography>
+                  </Link> */}
+                </MenuItem>
+
                 <MenuItem onClick={handleLogout}>
                   <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
-                {/* {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))} */}
               </Menu>
             </Box>
           </Toolbar>
