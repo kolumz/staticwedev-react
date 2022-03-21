@@ -10,6 +10,7 @@ export const getArticles = createAsyncThunk(
     const res = await fetch(
       "http://api.mediastack.com/v1/news?access_key=c3c53ed9cc2ac2f75b7efa8e813a618f&sources=cnn,bbc&limit=100"
     ).then((data) => data.json());
+    console.log(res);
     return res;
   }
 );
