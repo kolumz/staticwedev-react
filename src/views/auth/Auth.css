@@ -1,0 +1,7 @@
+.login_input fieldset {
+  border-radius: 24px !important;
+}
+.switcher {
+  cursor: pointer;
+  text-decoration: underline;
+}

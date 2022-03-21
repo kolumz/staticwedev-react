@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -18,11 +18,33 @@ import Badge from "@mui/material/Badge";
 import Fab from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import styles from "./Navigation.module.css";
-
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+import { useDispatch } from "react-redux";
+import { useNavigate, useLocation, Link } from "react-router-dom";
+import { logout } from "../views/auth/store/authSlice";
 
 const Navigation = () => {
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+  const [anchorElUser, setAnchorElUser] = useState(null);
+
+  useEffect(() => {
+    const token = user?.token;
+    // JWT
+
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, [location]);
+
+  const handleLogout = () => {
+    console.log("here");
+    handleCloseUserMenu();
+
+    dispatch(logout());
+    //navigate to hamepage
+    navigate("/auth");
+    setUser(null);
+  };
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
@@ -127,6 +149,7 @@ const Navigation = () => {
                   <NotificationsIcon className={`color_muted`} />
                 </Badge>
               </IconButton>
+              <span className="mx-1">{user?.result.name}</span>
               <Tooltip title="Open settings">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar
@@ -151,11 +174,15 @@ const Navigation = () => {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
+                <MenuItem>
+                  {/* <Link to={user?.result.name.replace(/\s/g, "")}>
+                    <Typography textAlign="center">Profile</Typography>
+                  </Link> */}
+                </MenuItem>
+
+                <MenuItem onClick={handleLogout}>
+                  <Typography textAlign="center">Logout</Typography>
+                </MenuItem>
               </Menu>
             </Box>
           </Toolbar>
