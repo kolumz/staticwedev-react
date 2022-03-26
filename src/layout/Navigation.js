@@ -37,10 +37,9 @@ const Navigation = () => {
   }, [location]);
 
   const handleLogout = () => {
-    console.log("here");
     handleCloseUserMenu();
 
-    dispatch(logout());
+    dispatch({ type: "LOGOUT" });
     //navigate to hamepage
     navigate("/auth");
     setUser(null);
@@ -105,7 +104,11 @@ const Navigation = () => {
     right: 0,
     margin: 16,
   });
+  const goToAddNewslet = () => {
+    navigate("/create-post");
+  };
 
+  console.log(user?.result.name);
   return (
     <>
       <AppBar color="" sx={{ bgcolor: "#fff" }} position="fixed">
@@ -188,7 +191,7 @@ const Navigation = () => {
           </Toolbar>
         </Container>
       </AppBar>
-      <StyledFab color="default" aria-label="add">
+      <StyledFab onClick={goToAddNewslet} color="default" aria-label="add">
         <AddIcon fontSize="large" />
       </StyledFab>
     </>

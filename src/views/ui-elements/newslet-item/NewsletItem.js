@@ -15,42 +15,83 @@ import ReplyIcon from "@mui/icons-material/Reply";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import * as moment from "moment";
 import "moment/locale/ar";
+import { useDispatch } from "react-redux";
+import { deletePost, getPost, likePost } from "../../../redux/actions/posts";
 
 import cnn from "../../../assets/cnn.jpg";
+import { useNavigate } from "react-router-dom";
+import { DeleteForever } from "@mui/icons-material";
 
-export default function NewsletItem({ article }) {
+export default function NewsletItem({ post }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleEditPost = (id) => {
+    dispatch(getPost(id));
+    navigate("/create-post");
+  };
+
+  const handleDeletePost = (id) => {
+    dispatch(deletePost(id));
+  };
+
+  const handleLikePost = (id) => {
+    dispatch(likePost(id));
+  };
   return (
     <Card style={{ borderRadius: "24px" }} sx={{ maxWidth: 345 }}>
       <CardMedia
         component="img"
-        // height={article.img.height}
-        image={article.image ? article.image : cnn}
+        // height={post.img.height}
+        image={post.selectedFile ? post.selectedFile : cnn}
         alt="Paella dish"
       />
       <CardHeader
         avatar={
-          // article.creator
-          //   .img ? // <Avatar alt="Remy Sharp" src={article.creator.img} />
+          // post.creator
+          //   .img ? // <Avatar alt="Remy Sharp" src={post.creator.img} />
           // null : (
           //   )
           <Avatar sx={{ bgcolor: red[500] }} aria-label="user1"></Avatar>
         }
         action={
-          <IconButton aria-label="settings">
+          <IconButton
+            onClick={() => handleEditPost(post._id)}
+            aria-label="settings"
+          >
             <MoreVertIcon />
           </IconButton>
         }
-        title={article.author ? article.author : "john doe"}
-        subheader={moment(article.publishedAt).locale("en").format("LL")}
+        title={post.creator ? post.creator : "john doe"}
+        subheader={moment(post.createdAt).fromNow()}
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {article.title}
+          {post.title}
+        </Typography>
+        <Typography className="mt-2" variant="body2" color="text.secondary">
+          {post.tags.map((tag) => `#${tag}`)}
         </Typography>
       </CardContent>
       <CardActions className="justify-content-between" disableSpacing>
-        <IconButton aria-label="add to favorites">
+        <IconButton
+          onClick={() => handleLikePost(post._id)}
+          aria-label="add to favorites"
+        >
           <FavoriteIcon />
+
+          {post.likeCount > 0 ? (
+            <>
+              <Typography className="mx-1">Like</Typography>
+              <Typography>{post.likeCount}</Typography>
+            </>
+          ) : null}
+        </IconButton>
+        <IconButton
+          onClick={() => handleDeletePost(post._id)}
+          aria-label="add to favorites"
+        >
+          <DeleteForever />
         </IconButton>
         <div>
           <IconButton aria-label="verify">

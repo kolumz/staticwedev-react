@@ -11,8 +11,8 @@ import {
   Container,
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
-import { login, signin, signup } from "./store/authSlice";
-// import { signin, signup } from "../../actions/auth";
+// import { login, signin, signup } from ".";
+import { signin, signup } from "../../redux/actions/auth";
 
 import Input from "./Input";
 import Icon from "./Icon";
@@ -30,13 +30,13 @@ const initialState = {
 };
 
 const Auth = () => {
-  const [form, setForm] = useState(initialState);
+  const handleShowPassword = () => setShowPassword(!showPassword);
   const [isSignup, setIsSignup] = useState(false);
+  const [form, setForm] = useState(initialState);
 
   const dispatch = useDispatch();
 
   const [showPassword, setShowPassword] = useState(false);
-  const handleShowPassword = () => setShowPassword(!showPassword);
   const navigate = useNavigate();
 
   const switchMode = () => {
@@ -48,6 +48,7 @@ const Auth = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    console.log(form);
     if (isSignup) {
       dispatch(signup({ form, navigate }));
     } else {
@@ -55,13 +56,16 @@ const Auth = () => {
     }
   };
 
+  const handleChange = (e) =>
+    setForm({ ...form, [e.target.name]: e.target.value });
+
   const googleSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
 
     try {
       // send data to store
-      dispatch(login({ result, token }));
+      dispatch({ type: "AUTH", data: { result, token } });
       //navigate to hamepage
       navigate("/");
     } catch (error) {
@@ -72,8 +76,6 @@ const Auth = () => {
   const googleError = () =>
     console.log("Google Sign In was unsuccessful. Try again later");
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
   return (
     <Container component="main" maxWidth="xs">
       <Paper
