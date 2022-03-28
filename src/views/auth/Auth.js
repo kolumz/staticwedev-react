@@ -32,7 +32,7 @@ const initialState = {
 const Auth = () => {
   const handleShowPassword = () => setShowPassword(!showPassword);
   const [isSignup, setIsSignup] = useState(false);
-  const [form, setForm] = useState(initialState);
+  const [formData, setFormData] = useState(initialState);
 
   const dispatch = useDispatch();
 
@@ -40,24 +40,24 @@ const Auth = () => {
   const navigate = useNavigate();
 
   const switchMode = () => {
-    setForm(initialState);
+    setFormData(initialState);
     setIsSignup((prevIsSignup) => !prevIsSignup);
     setShowPassword(false);
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    // console.log(formData);
 
-    console.log(form);
+    e.preventDefault();
     if (isSignup) {
-      dispatch(signup({ form, navigate }));
+      dispatch(signup(formData, navigate));
     } else {
-      dispatch(signin({ form, navigate }));
+      dispatch(signin(formData, navigate));
     }
   };
 
   const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const googleSuccess = async (res) => {
     const result = res?.profileObj;
