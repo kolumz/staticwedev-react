@@ -105,10 +105,13 @@ const Navigation = () => {
     margin: 16,
   });
   const goToAddNewslet = () => {
-    navigate("/create-post");
+    if (!user?.result?.name) {
+      navigate("/auth");
+    } else {
+      navigate("/create-post");
+    }
   };
 
-  console.log(user?.result.name);
   return (
     <>
       <AppBar color="" sx={{ bgcolor: "#fff" }} position="fixed">

@@ -62,7 +62,7 @@ export default function NewsletItem({ post }) {
             <MoreVertIcon />
           </IconButton>
         }
-        title={post.creator ? post.creator : "john doe"}
+        title={post.name}
         subheader={moment(post.createdAt).fromNow()}
       />
       <CardContent>

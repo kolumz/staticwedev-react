@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 const CreatePost = () => {
   const [postData, setPostData] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
@@ -19,6 +18,7 @@ const CreatePost = () => {
   const post = useSelector((state) => {
     return currentId ? state.posts.find((p) => p._id === currentId) : null;
   });
+  const user = JSON.parse(localStorage.getItem("profile"));
   // const post = useSelector((state) =>
   //   currentId ? state.posts.find((message) => message._id === currentId) : null
   // );
@@ -31,10 +31,16 @@ const CreatePost = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(user);
     if (currentId) {
-      dispatch(updatePost(navigate, currentId, postData));
+      dispatch(
+        updatePost(navigate, currentId, {
+          ...postData,
+          name: user?.result?.name,
+        })
+      );
     } else {
-      dispatch(createPost(navigate, postData));
+      dispatch(createPost(navigate, { ...postData, name: user?.result?.name }));
     }
     clear();
   };
@@ -42,7 +48,6 @@ const CreatePost = () => {
   const clear = () => {
     dispatch(getPost(null));
     setPostData({
-      creator: "",
       title: "",
       message: "",
       tags: "",
@@ -57,17 +62,6 @@ const CreatePost = () => {
       >
         <form onSubmit={(e) => handleSubmit(e)} className="w-100 mt-4">
           <Grid container spacing={2}>
-            <TextField
-              label="creator"
-              name="creator"
-              value={postData.creator}
-              onChange={(e) =>
-                setPostData({ ...postData, creator: e.target.value })
-              }
-              variant="outlined"
-              required
-              fullWidth
-            />
             <TextField
               label="title"
               name="title"
