@@ -20,11 +20,14 @@ import { deletePost, getPost, likePost } from "../../../redux/actions/posts";
 
 import cnn from "../../../assets/cnn.jpg";
 import { useNavigate } from "react-router-dom";
-import { DeleteForever } from "@mui/icons-material";
+import { DeleteForever, FavoriteOutlined } from "@mui/icons-material";
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 
 export default function NewsletItem({ post }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem("profile"));
 
   const handleEditPost = (id) => {
     dispatch(getPost(id));
@@ -37,6 +40,45 @@ export default function NewsletItem({ post }) {
 
   const handleLikePost = (id) => {
     dispatch(likePost(id));
+  };
+
+  const Likes = () => {
+    if (post.likes.length > 0) {
+      return post.likes.find(
+        (like) => like === (user?.result?.googleId || user?.result?._id)
+      ) ? (
+        <>
+          <FavoriteIcon />
+          <>
+            <Typography className="mx-1">
+              {post.likes.length > 2
+                ? `You and ${post.likes.length - 1} others`
+                : `${post.likes.length} like${
+                    post.likes.length > 1 ? "s" : ""
+                  }`}
+            </Typography>
+          </>
+          &nbsp;
+        </>
+      ) : (
+        <>
+          <FavoriteBorderOutlinedIcon />
+          <Typography>
+            {" "}
+            &nbsp;{post.likes.length}{" "}
+            {post.likes.length === 1 ? "Like" : "Likes"}
+          </Typography>
+        </>
+      );
+    }
+
+    return (
+      <>
+        {/* <ThumbUpAltOutlined fontSize="small" /> */}
+        <FavoriteBorderOutlinedIcon />
+        <Typography>&nbsp;Like</Typography>
+      </>
+    );
   };
   return (
     <Card style={{ borderRadius: "24px" }} sx={{ maxWidth: 345 }}>
@@ -55,12 +97,15 @@ export default function NewsletItem({ post }) {
           <Avatar sx={{ bgcolor: red[500] }} aria-label="user1"></Avatar>
         }
         action={
-          <IconButton
-            onClick={() => handleEditPost(post._id)}
-            aria-label="settings"
-          >
-            <MoreVertIcon />
-          </IconButton>
+          user?.result?.googleId === post?.creator ||
+          (user?.result._id === post?.creator && (
+            <IconButton
+              onClick={() => handleEditPost(post._id)}
+              aria-label="settings"
+            >
+              <MoreVertIcon />
+            </IconButton>
+          ))
         }
         title={post.name}
         subheader={moment(post.createdAt).fromNow()}
@@ -78,21 +123,18 @@ export default function NewsletItem({ post }) {
           onClick={() => handleLikePost(post._id)}
           aria-label="add to favorites"
         >
-          <FavoriteIcon />
+          <Likes />
+        </IconButton>
+        {user?.result?.googleId === post?.creator ||
+          (user?.result._id === post?.creator && (
+            <IconButton
+              onClick={() => handleDeletePost(post._id)}
+              aria-label="add to favorites"
+            >
+              <DeleteForever />
+            </IconButton>
+          ))}
 
-          {post.likeCount > 0 ? (
-            <>
-              <Typography className="mx-1">Like</Typography>
-              <Typography>{post.likeCount}</Typography>
-            </>
-          ) : null}
-        </IconButton>
-        <IconButton
-          onClick={() => handleDeletePost(post._id)}
-          aria-label="add to favorites"
-        >
-          <DeleteForever />
-        </IconButton>
         <div>
           <IconButton aria-label="verify">
             <CheckCircleIcon />
