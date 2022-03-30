@@ -20,7 +20,7 @@ import AddIcon from "@mui/icons-material/Add";
 import styles from "./Navigation.module.css";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import { logout } from "../views/auth/store/authSlice";
+import decode from "jwt-decode";
 
 const Navigation = () => {
   const dispatch = useDispatch();
@@ -28,13 +28,6 @@ const Navigation = () => {
   const location = useLocation();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
   const [anchorElUser, setAnchorElUser] = useState(null);
-
-  useEffect(() => {
-    const token = user?.token;
-    // JWT
-
-    setUser(JSON.parse(localStorage.getItem("profile")));
-  }, [location]);
 
   const handleLogout = () => {
     handleCloseUserMenu();
@@ -44,6 +37,19 @@ const Navigation = () => {
     navigate("/auth");
     setUser(null);
   };
+
+  useEffect(() => {
+    const token = user?.token;
+
+    if (token) {
+      const decodedToken = decode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        handleLogout();
+      }
+    }
+
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, [location]);
 
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
